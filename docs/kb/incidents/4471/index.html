@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>#4471 · two date problems merged together · support kb</title>
+    <style>
+      :root { --bg:#fbfaf7; --fg:#1d1d1b; --muted:#6b6a66; --line:#e3e0d8; --accent:#2f6f5e; --warn:#b4501f; --warn-bg:#fbeee6; }
+      @media (prefers-color-scheme: dark) { :root { --bg:#171716; --fg:#ecebe6; --muted:#9c9a93; --line:#34332f; --accent:#6fbfa6; --warn:#f0905d; --warn-bg:#3a2418; } }
+      body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,sans-serif; }
+      .kb { max-width:760px; margin:0 auto; padding:2rem 16px 4rem; }
+      .crumb { color:var(--muted); font:0.8rem ui-monospace,monospace; text-decoration:none; }
+      h1 { line-height:1.2; margin:.25rem 0 .5rem; } h2 { margin-top:2rem; }
+      .meta { display:flex; flex-wrap:wrap; gap:.5rem 1rem; color:var(--muted); font-size:.85rem; }
+      .status { border:1px solid var(--line); border-radius:99px; padding:0 .6rem; }
+      .callout { background:var(--warn-bg); color:var(--warn); padding:.6rem 1rem; border-radius:6px; }
+      table { border-collapse:collapse; width:100%; margin:1rem 0; font-size:.92rem; }
+      th,td { border-bottom:1px solid var(--line); padding:.35rem .5rem; text-align:left; }
+      code { font: .88em ui-monospace,monospace; } a { color:var(--accent); }
+      .stamp { margin-top:2rem; color:var(--muted); font:.85rem ui-monospace,monospace; }
+      footer { border-top:1px solid var(--line); color:var(--muted); font-size:.8rem; margin-top:3rem; padding-top:1rem; }
+    </style>
+  </head>
+  <body>
+    <article class="kb">
+      <a class="crumb" href="/">support desk · kb</a>
+      <h1>#4471 · two date problems merged together</h1>
+      <p class="meta"><span>owner <b>support desk</b></span><span class="status">known</span><span>reviewed 2026-10-29</span></p>
+
+      <p>Since April, people have told us their bookings land on the wrong day: a month flipped. By 4 October the desk had <strong>412 unique reports</strong> in one merged ticket. The export contains 427 rows because 15 report IDs occur twice where its pages overlap.</p>
+      <p><strong>Merged as one issue, but it contains two causes.</strong> The first is a parser bug: it reads dates month first while day-first tenants write the day first. The second is a form bug: <code>booking-v3</code> shows a month-first hint to some day-first tenants. The fixes are tracked separately in <a href="https://github.com/MarcinSkr/mega-dev/issues/1">issue #1</a> and <a href="https://github.com/MarcinSkr/mega-dev/issues/2">issue #2</a>.</p>
+      <p class="callout">Known. Two causes, two fixes queued.</p>
+
+      <h2>What was merged</h2>
+      <p><strong>412</strong> unique reports merged into #4471 · <strong>2</strong> causes</p>
+      <table>
+        <thead><tr><th>cause</th><th>reports</th><th>tagged as</th><th>tenants</th></tr></thead>
+        <tbody>
+          <tr><td><code>parser</code></td><td>379</td><td>parser ×356 · hint ×23</td><td>11</td></tr>
+          <tr><td><code>hint</code></td><td>33</td><td>hint ×18 · parser ×15</td><td>3</td></tr>
+        </tbody>
+      </table>
+      <p>The export count deduplicates report IDs before grouping. The cause depends on the tenant locale, booking form, and channel; the intake tag is only an initial guess.</p>
+
+      <h2>What to do next</h2>
+      <ul>
+        <li>Fix the shared parser for the <strong>379 reports</strong> in the <code>parser</code> group.</li>
+        <li>Fix the <code>booking-v3</code> date hint and parsing for the <strong>33 reports</strong> in the <code>hint</code> group.</li>
+        <li>Keep the groups separate in follow-up work: the form bug is not evidence that the shared parser is wrong for every report.</li>
+      </ul>
+
+      <h2>Lessons</h2>
+      <ul>
+        <li>A big ticket can contain more than one cause. Group by tenant configuration and channel before assigning work.</li>
+        <li>A paginated export can repeat IDs. Count unique IDs, not rows.</li>
+        <li>Write the page while the queue is still in your head.</li>
+      </ul>
+      <p class="stamp">desk ref <b>DR-1Z8Y-0CT7</b></p>
+      <footer>Pages are written by people. Tables and charts are built from data at render time.</footer>
+    </article>
+  </body>
+</html>

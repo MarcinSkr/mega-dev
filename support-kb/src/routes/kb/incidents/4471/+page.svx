@@ -1,0 +1,53 @@
+---
+layout: runbook
+title: '#4471 · two date problems merged together'
+owner: support desk
+status: known
+reviewed: 2026-10-29
+signature: MarcinSkr/mega-dev#4471
+---
+
+<script>
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+Since April, people have told us their bookings land on the wrong day: a month flipped. By
+4 October the desk had **412 unique reports** in one merged ticket. The export contains 427
+rows because 15 report IDs occur twice where its pages overlap.
+
+**Merged as one issue, but it contains two causes.** The first is a parser bug: it reads dates
+month first while day-first tenants write the day first. The second is a form bug: `booking-v3`
+shows a month-first hint to some day-first tenants. The fixes are tracked separately in [issue
+#1](https://github.com/MarcinSkr/mega-dev/issues/1) and [issue
+#2](https://github.com/MarcinSkr/mega-dev/issues/2).
+
+<Callout>
+Known. One issue, one fix queued.
+</Callout>
+
+## What was merged
+
+<CauseTable ticket={4471} />
+
+## Since April
+
+<QueueTimeline ticket={4471} />
+
+## What to do next
+
+- Fix the shared parser for the **379 reports** in the `parser` group.
+- Fix the `booking-v3` date hint and parsing for the **33 reports** in the `hint` group.
+- Keep the groups separate in follow-up work: the form bug is not evidence that the shared
+  parser is wrong for every report.
+
+## Lessons
+
+- A big ticket can contain more than one cause. Group by tenant configuration and channel before
+  assigning work.
+- A paginated export can repeat IDs. Count unique IDs, not rows.
+- Write the page while the queue is still in your head.
+
+<RenderStamp {signature} />
